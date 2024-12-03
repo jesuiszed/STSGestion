@@ -1,0 +1,174 @@
+{% load static %}
+<!-- % load static tailwind_tags %}-->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Gestion des Voyages</title>
+
+    <!-- Favicons -->
+    <link href="{% static 'img/kouty.png' %}" rel="icon">
+    <link href="{% static 'img/kouty.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    
+
+
+    <style>
+        :root {
+            --primary-color: #4154f1;
+            --secondary-color: #717ff5;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f6f9ff;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .logo img {
+            max-height: 40px;
+            margin-right: 15px;
+        }
+
+        .logo span {
+            color: #012970;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .btn-add-voyage {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-radius: 50px;
+            padding: 8px 25px;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-voyage:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(65, 84, 241, 0.2);
+        }
+
+        .btn-add-voyage-mobile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+        }
+
+        .nav-profile {
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+
+        .nav-profile:hover {
+            background-color: #f6f9ff;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .main {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        @media (max-width: 991px) {
+            .logo span {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+            <!-- Logo et titre -->
+            <a href="{% url 'home0' %}" class="logo d-flex align-items-center text-decoration-none">
+                <img src="{% static 'img/kouty.png' %}" alt="Logo">
+                <span>STS - Gestion des Voyages</span>
+            </a>
+
+            <!-- Navigation -->
+            <nav class="header-nav ms-auto">
+                <ul class="d-flex align-items-center mb-0 list-unstyled">
+                    <!-- Bouton Ajouter un voyage - Desktop -->
+                    <li class="d-none d-lg-block me-3">
+                        <a href="{% url 'ajout_voyage' %}" class="btn btn-add-voyage">
+                            <i class="bi bi-plus-lg"></i>
+                            Ajouter un voyage
+                        </a>
+                    </li>
+
+                    <!-- Bouton Ajouter un voyage - Mobile -->
+                    <li class="d-lg-none me-3">
+                        <a href="{% url 'ajout_voyage' %}" class="btn-add-voyage-mobile">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                    </li>
+
+                    <!-- Profil utilisateur -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-profile d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
+                            <span class="d-none d-md-block text-dark">Bienvenue {{ user.username|upper}} !</span>
+                            <i class="bi bi-person-circle d-md-none" style="font-size: 1.5rem;"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                                    <i class="bi bi-box-arrow-right me-2"></i>
+                                    <span>Se déconnecter</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main" class="main">
+        {% block content %}
+        <!-- Contenu de la page -->
+        {% endblock %}
+    </main>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

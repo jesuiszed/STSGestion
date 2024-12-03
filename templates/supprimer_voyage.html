@@ -1,0 +1,6 @@
+<h1>Voulez-vous supprimer le voyage de :  {{ voyage.NomChauffeur }} ?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Oui, supprimer</button>
+    <a href="{% url 'accueil' %}">Non, annuler</a>
+</form>

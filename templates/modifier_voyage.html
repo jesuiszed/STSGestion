@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Voyage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function validateForm() {
+            const depart = document.getElementById('VilleDepart').value;
+            const arrivee = document.getElementById('VilleArrivee').value;
+            const heureDepart = document.getElementById('heureDepart').value;
+            const prix = document.getElementById('Prix').value;
+            const places = document.getElementById('NbrPlaceVide').value;
+
+            if (depart === arrivee) {
+                alert("La ville de départ et d'arrivée ne peuvent pas être identiques.");
+                return false;
+            }
+            if (places <= 0) {
+                alert("Le nombre de places doit être supérieur à zéro.");
+                return false;
+            }
+            if (prix < 0) {
+                alert("Le prix ne peut pas être négatif.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center my-5">
+            <div class="col-12 col-md-8">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <h1 class="text-center mb-4">Modifier Voyage</h1>
+                        <form method="post" onsubmit="return validateForm()">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label for="NomChauffeur" class="form-label">Nom du Chauffeur</label>
+                                <input type="text" class="form-control" id="NomChauffeur" name="NomChauffeur" value="{{ form.NomChauffeur.value }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="plaque" class="form-label">Plaque d'immatriculation</label>
+                                <input type="text" class="form-control" id="plaque" name="plaque" value="{{ form.plaque.value }}" pattern="[A-Z0-9-]{1,10}" title="Format: lettres majuscules, chiffres et tirets uniquement" oninput="upperCase(this)">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="NbrPlaceVide" class="form-label">Nombre de places vides</label>
+                                <input type="number" class="form-control" id="NbrPlaceVide" name="NbrPlaceVide" value="{{ form.NbrPlaceVide.value }}" required min="1" max="50">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="VilleDepart" class="form-label">Ville de départ</label>
+                                <select class="form-select" id="VilleDepart" name="VilleDepart" required>
+                                    <option value="">Sélectionnez une ville</option>
+                                    <option value="Bobo dioulasso" {% if form.VilleDepart.value == 'Bobo dioulasso' %}selected{% endif %}>Bobo dioulasso</option>
+                                    <option value="Ouagadougou" {% if form.VilleDepart.value == 'Ouagadougou' %}selected{% endif %}>Ouagadougou</option>
+                                    <option value="Cinkinsse" {% if form.VilleDepart.value == 'Cinkinsse' %}selected{% endif %}>Cinkinsse</option>
+                                    <option value="Dapaong" {% if form.VilleDepart.value == 'Dapaong' %}selected{% endif %}>Dapaong</option>
+                                    <option value="Lomé" {% if form.VilleDepart.value == 'Lomé' %}selected{% endif %}>Lomé</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="VilleArrivee" class="form-label">Ville d'arrivée</label>
+                                <select class="form-select" id="VilleArrivee" name="VilleArrivee" required>
+                                    <option value="">Sélectionnez une ville</option>
+                                    <option value="Bobo dioulasso" {% if form.VilleArrivee.value == 'Bobo dioulasso' %}selected{% endif %}>Bobo dioulasso</option>
+                                    <option value="Ouagadougou" {% if form.VilleArrivee.value == 'Ouagadougou' %}selected{% endif %}>Ouagadougou</option>
+                                    <option value="Cinkinsse" {% if form.VilleArrivee.value == 'Cinkinsse' %}selected{% endif %}>Cinkinsse</option>
+                                    <option value="Dapaong" {% if form.VilleArrivee.value == 'Dapaong' %}selected{% endif %}>Dapaong</option>
+                                    <option value="Lomé" {% if form.VilleArrivee.value == 'Lomé' %}selected{% endif %}>Lomé</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="heureDepart" class="form-label">Heure de départ</label>
+                                <input type="time" class="form-control" id="heureDepart" name="heureDepart" value="{{ form.heureDepart.value }}" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="Prix" class="form-label">Prix du voyage</label>
+                                <input type="number" class="form-control" id="Prix" name="Prix" value="{{ form.Prix.value }}" required min="0" step="0.01">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="button" onclick="window.location.href='/'" class="btn btn-secondary w-100">
+                                        Annuler
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        Modifier
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

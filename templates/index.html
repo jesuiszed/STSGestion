@@ -1,0 +1,137 @@
+{% include 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <!-- Formulaire de filtre et tri -->
+    <form method="get" class="mb-4">
+        <div class="row g-3">
+            <!-- Filtre par ville de départ -->
+            <div class="col-md-4">
+                <label for="ville_depart" class="form-label fw-bold">Ville de Départ</label>
+                <select id="ville_depart" name="ville_depart" class="form-select">
+                    <option value="" {% if ville_depart == "" %}selected{% endif %}>Toutes les villes</option>
+                    <option value="Bobo dioulasso" {% if ville_depart == "Bobo dioulasso" %}selected{% endif %}>Bobo dioulasso</option>
+                    <option value="Ouagadougou" {% if ville_depart == "Ouagadougou" %}selected{% endif %}>Ouagadougou</option>
+                    <option value="Cinkinsse" {% if ville_depart == "Cinkinsse" %}selected{% endif %}>Cinkinsse</option>
+                    <option value="Dapaong" {% if ville_depart == "Dapaong" %}selected{% endif %}>Dapaong</option>
+                    <option value="Lomé" {% if ville_depart == "Lomé" %}selected{% endif %}>Lomé</option>
+                </select>
+            </div>
+
+            <!-- Filtre par ville d'arrivée -->
+            <div class="col-md-4">
+                <label for="ville_arrivee" class="form-label fw-bold">Ville d'Arrivée</label>
+                <select id="ville_arrivee" name="ville_arrivee" class="form-select">
+                    <option value="" {% if ville_depart == "" %}selected{% endif %}>Toutes les villes</option>
+                    <option value="Bobo dioulasso" {% if ville_depart == "Bobo dioulasso" %}selected{% endif %}>Bobo dioulasso</option>
+                    <option value="Ouagadougou" {% if ville_depart == "Ouagadougou" %}selected{% endif %}>Ouagadougou</option>
+                    <option value="Cinkinsse" {% if ville_depart == "Cinkinsse" %}selected{% endif %}>Cinkinsse</option>
+                    <option value="Dapaong" {% if ville_depart == "Dapaong" %}selected{% endif %}>Dapaong</option>
+                    <option value="Lomé" {% if ville_depart == "Lomé" %}selected{% endif %}>Lomé</option>                </select>
+            </div>
+
+            <!-- Tri -->
+            <div class="col-md-4">
+                <label for="sort_by" class="form-label fw-bold">Trier par</label>
+                <select id="sort_by" name="sort_by" class="form-select">
+                    <option value="date" {% if sort_by == "date" %}selected{% endif %}>Date</option>
+                    <option value="Prix" {% if sort_by == "Prix" %}selected{% endif %}>Prix</option>
+                    <option value="NbrPlaceVide" {% if sort_by == "NbrPlaceVide" %}selected{% endif %}>Nombre de places vides</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="mt-3 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary me-2">Appliquer</button>
+            <a href="{% url 'home1' %}" class="btn btn-secondary">Réinitialiser</a>
+        </div>
+    </form>
+
+    <!-- Tableau des voyages -->
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Chauffeur</th>
+                    <th>Numéro de Plaque</th>
+                    <th>Places Vides</th>
+                    <th>Ville de Départ</th>
+                    <th>Ville d'Arrivée</th>
+                    <th>Heure de Départ</th>
+                    <th>Date</th>
+                    <th>Prix</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for voyage in Voyages %}
+                <tr>
+                    <td>{{ voyage.NomChauffeur }}</td>
+                    <td>{{ voyage.plaque }}</td>
+                    <td>{{ voyage.NbrPlaceVide }}</td>
+                    <td>{{ voyage.VilleDepart }}</td>
+                    <td>{{ voyage.VilleArrivee }}</td>
+                    <td>{{ voyage.heureDepart }}</td>
+                    <td>{{ voyage.date }}</td>
+                    <td>{{ voyage.Prix }}</td>
+                    <td>
+                        <a href="{% url 'modifier_voyage' voyage.pk %}" class="text-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        {% if voyage.recent %}
+                            <a href="{% url 'supprimer_voyage' voyage.pk %}" class="text-danger ms-2"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce voyage ?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                         {% else %}   
+                            <a>Voyage non supprimable</a>
+                        {% endif %}
+
+
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center">Aucun voyage trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if Voyages.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">&laquo;&laquo;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ Voyages.previous_page_number }}" aria-label="Previous">&laquo;</a>
+                </li>
+            {% endif %}
+
+            {% for num in Voyages.paginator.page_range %}
+                {% if num == Voyages.number %}
+                    <li class="page-item active">
+                        <a class="page-link">{{ num }}</a>
+                    </li>
+                {% elif num >= Voyages.number|add:'-2' and num <= Voyages.number|add:'2' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if Voyages.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ Voyages.next_page_number }}" aria-label="Next">&raquo;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ Voyages.paginator.num_pages }}" aria-label="Last">&raquo;&raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

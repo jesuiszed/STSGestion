@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Connexion - Gestion des Voyages</title>
+
+  <!-- Favicons -->
+  <link href="{% static 'img/KOUTY.png' %}" rel="icon">
+  <link href="{% static 'img/KOUTY.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'css/login.css' %}" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .login-wrapper {
+      max-width: 400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      width: 100%;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo-container img {
+      max-width: 150px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    .login-title {
+      background-color: #0a6bed;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      padding: 0.75rem;
+      border: 1px solid #ced4da;
+    }
+
+    .form-control:focus {
+      border-color: #0a6bed;
+      box-shadow: 0 0 0 0.2rem rgba(10, 107, 237, 0.25);
+    }
+
+    .btn-primary {
+      background-color: #0a6bed;
+      border-color: #0a6bed;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #084c9c;
+      border-color: #084c9c;
+    }
+
+    .alert {
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 576px) {
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      .login-wrapper {
+        padding: 10px;
+      }
+
+      .logo-container img {
+        max-width: 120px;
+      }
+
+      .login-title {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="login-wrapper">
+      <div class="logo-container">
+        <img src="{% static 'img/KOUTY.png' %}" alt="Logo KOUTY" class="img-fluid">
+        <div class="login-title">Connexion à votre compte</div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          {% if messages %}
+            <div>
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} text-center" style="color: red" role="alert">
+                {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="username" class="form-label">Nom d'utilisateur</label>
+              <input type="text" id="username" name="username" class="form-control" placeholder="Entrez votre nom d'utilisateur" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="form-label">Mot de passe</label>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Entrez votre mot de passe" required>
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">Connexion</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>
